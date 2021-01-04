@@ -1,0 +1,143 @@
+#include <iostream>
+#include <fstream>
+#include<string>
+using namespace std;
+struct List {
+	int data;//поле данных 
+	List* pPrev;//указатель на предыдущий элемент
+};
+//Создание списка:
+List* create(int data) {
+	List* newList = new List;
+	newList->data = data;
+	newList->pPrev = NULL;//т.к.это первый элемент и перед ним никаких элементов нету, то pPrew = NULL
+	return newList;
+}
+//Добавление элемента в список перед элементом с заданным ключом:
+List* push(List* list, int data, int key) {
+	if (list == NULL)//если list равен NULL, то продолжение ф-ции невозможно
+		return list;
+	if (list->data == key) {//если элемент с нужным ключом является первым, то добавляем новый элемент в начало и завершаем ф-цию
+		List* newElement = new List;//выделение памяти под новый элемент списка
+		newElement->data = data;
+		newElement->pPrev = list;
+		return newElement;
+	}
+	List* tempList = list;//запоминаем указатель на начало списка, чтобы не потерять его
+	while (tempList->pPrev != NULL) {//цикл продолжает работу пока list не будет последним элементом 
+		if (tempList->pPrev->data == key)//если у предыдущего элемента в списке data равен key, то цикл завершаем (т.к. нам нужен не сам элемент у которого data == key, а следующий)
+			break;
+		tempList = tempList->pPrev;//переход к пердыдущечму элементу		
+	}
+	if (tempList->pPrev == NULL)//если в списке нету элемента с нужным ключом, то возвращаем старый список
+		return list;
+	List* newElement = new List;//выделение памяти под новый элемент списка
+	newElement->data = data;
+	newElement->pPrev = tempList->pPrev;
+	tempList->pPrev = newElement;
+	return list;
+}
+//Удаление элемента из списка с заданным ключом:
+List* removeElement(List* list, int key) {
+	if (list == NULL)
+		return list;
+	if (list->data == key) {//если элемент с нужным ключом является первым, то удаляем его и возвращаем новый список
+		List* temp = list->pPrev;
+		delete list;
+		return temp;
+	}
+	List* tempList = list;//запоминаем указатель на начало списка, чтобы не потерять его
+	while (tempList->pPrev != NULL) {//цикл продолжает работу пока list не будет последним элементом 
+		if (tempList->pPrev->data == key)//если у предыдущего элемента в списке data равен key, то цикл завершаем (т.к. нам нужен не сам элемент у которого data == key, а следующий)
+			break;
+		tempList = tempList->pPrev;//переход к пердыдущечму элементу		
+	}
+	if (tempList->pPrev == NULL)//если в списке нету элемента с нужным ключом, то возвращаем старый список
+		return list;
+	List* temp = tempList->pPrev;//элемент который надо удалить
+	tempList->pPrev = temp->pPrev;//присваеваем pPrew ссылку на элемент, идущий перед элементом который надо удалить
+	delete temp;
+	return list;
+}
+//Печать списка:
+void printList(List* list) {
+	if (list == NULL)
+		return;
+	while (list != NULL) {
+		cout << list->data << " ";
+		list = list->pPrev;
+	}
+}
+//Запись списка в файл:
+void outputFile(List* list) {
+	if (list == NULL)
+		return;
+	string nameFile;
+	cout << "Введите название файла: ";
+	cin >> nameFile;
+	ofstream out(nameFile);
+	if (!out.is_open()) {//обработка ошибки при открытие файла
+		cout << "Не удалось открыть файл " << nameFile << endl;
+		return;
+	}
+	while (list != NULL) {
+		out << list->data << " ";
+		list = list->pPrev;
+	}
+	out.close();
+}
+//Уничтожение списка:
+List* deleteList(List* list) {
+	if (list == NULL)
+		return NULL;
+	while (list != NULL) {
+		List* temp = list;
+		list = list->pPrev;
+		delete temp;
+	}
+	return NULL;
+}
+//Восстановление списка из файла:
+List* inputFile() {
+	string nameFile;
+	cout << "Введите название файла: ";
+	cin >> nameFile;
+	ifstream in(nameFile);
+	if (!in.is_open()) {//обработка ошибки при открытие файла
+		cout << "Не удалось открыть файл " << nameFile << endl;
+		return NULL;
+	}
+	List* list;
+	int data;
+	in >> data;
+	list = create(data);//создаем новый список
+	List* temp = list;//запоминаем вершину списка чтобы не потерять
+	while (in >> data) {
+		List* newElement = new List;
+		newElement->data = data;
+		newElement->pPrev = NULL;
+		list->pPrev = newElement;
+		list = newElement;
+	}
+	in.close();
+	return temp;
+}
+int main() {
+	setlocale(0, "");
+	//пример использования функций
+	List* list = create(1);//сохдание списка
+	list = push(list, 4, 1);//доавление элемента перед 1
+	list = push(list, 5, 4);//доавление элемента перед 4
+	list = push(list, 7, 10);//доавление элемента перед 10 но 10 нету в списке поэтому 7 не добавиться
+	list = push(list, 2, 1);//доавление элемента перед 1
+	outputFile(list);//вывод в файл
+	printList(list); cout << endl;//вывод тоже самое в консоль
+	list = removeElement(list, 2);//удаление элемента с ключом 2
+	printList(list); cout << endl;//вывовд списка уже без 2
+	list = deleteList(list);//очистка всего списка
+	list = inputFile();//считывает список из файла, до вызова inputFile() список был пуст
+	printList(list); cout << endl;//вывод списка в консоль
+	list = deleteList(list);//очистка всего списка
+	system("pause");
+	return 0;
+}
