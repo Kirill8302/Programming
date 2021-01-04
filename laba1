@@ -30,6 +30,7 @@ double f1 = (c1 - (d1 - e1)) / g1;
 cout << "double=" << f1 << endl;
 //Вывод результата с 8 знаками после запятой для double
 printf(" double = %.8f", f1);
+system("pause");
 }
 //Задание 2
 #include <iostream>
@@ -65,4 +66,5 @@ c = b > a;
 cout << "7)" << a << endl;
 cout << "8)" << b << endl;
 cout << "9)" << c << endl;
+system("pause");
 }
