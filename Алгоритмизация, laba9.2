@@ -1,0 +1,22 @@
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+//Функция для подсчета кол-ва слов
+int main()
+{
+	setlocale(LC_CTYPE, "Russian");
+	std::ifstream in("F2.txt");
+	if (!in.is_open())
+	{
+		std::cout << "Error";
+		exit(EXIT_FAILURE);
+	}
+	std::string str;
+	int count = 0;
+	while (in >> str)
+		count++;
+	std::cout << "Кол-во слов = " << count << std::endl;
+	in.close();
+	std::cin.get();
+	return 0;
+}
