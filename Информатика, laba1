@@ -2,35 +2,38 @@
 //Директивы препроцессора
 #include <iostream>
 #include <cmath>
-//Пространство имён std
-using namespace std;
 //Главная функция
 int main()
 {
 	//Промежуточные переменные для типа float
-	float a = 1000, b = 0.0001, c, d, e, g;
-	c = pow((a - b), 4);
-	d = pow(a, 2);
-	e = (2 * a * b);
-	g = pow(b, 2);
+	float a = 1000;
+	float b = 0.0001;
+	float aa = pow(a, 2);
+	float bb = pow(b, 2);
 	//Вычисление выражений и вывод результатов для float
-	float f = (c - (d - e)) / g;
-	cout << "float=" << f << endl;
-	//Вывод результата с 8 знаками после запятой для float
-	printf(" float = %.8f", f);
-	cout << "" << endl;
+	float q = pow(a - b, 2);
+	float w = aa - 2 * a * b;
+	float e = q - w;
+	float r = bb;
+	float result = e / r;
+	std::cout << result;
+}
+#include <iostream>
+#include <cmath>
+int main()
+{
 	//Промежуточные переменные для типа double
-	double a1 = 1000, b1 = 0.0001, c1, d1, e1, g1;
-	c1 = pow((a1 - b1), 4);
-	d1 = pow(a1, 2);
-	e1 = (2 * a1 * b1);
-	g1 = pow(b1, 2);
+	double a = 1000;
+	double b = 0.0001;
+	double aa = pow(a, 2);
+	double bb = pow(b, 2);
 	//Вычисление выражений и вывод результатов для double
-	double f1 = (c1 - (d1 - e1)) / g1;
-	cout << "double=" << f1 << endl;
-	//Вывод результата с 8 знаками после запятой для double
-	printf(" double = %.8f", f1);
-	system("pause");
+	double q = pow(a - b, 2);
+	double w = aa - 2 * a * b;
+	double e = q - w;
+	double r = bb;
+	double result = e / r;
+	std::cout << result;
 }
 //Задание 2
 #include <iostream>
