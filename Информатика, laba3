@@ -4,26 +4,31 @@ using namespace std;
 int main() {
 	//Переменные, заданные вариантом
 	double pi = 3.14, e = 0.0001;
-	double a = pi / 5.0, b = 9.0 * pi / 5.0, sn, se, s, dx, y, x;
+	double a = pi / 5, b = 9 * pi / 5, SN, SE, s, yx, Y, X;
 	int k = 10, n = 40;
-	dx = ((b - a) / k);
-	for (x = a; x <= b; x += dx) {
-		//Обнуление значений сумм для заданного n, для заданной точности 
-		sn = 0; se = 0; s = 0;
+	yx = (b - a) / k;
+	for (X = a; X <= b; X += yx) {
+		//Обнуление значений сумм для заданного n, для заданной точности
+		SN = 0; SE = 0; s = 0;
 		// Циклом вычисляем сумму для заданного n
-		for (int i = 1; i <= n; i++)
-			sn += (cos(i * x) / i);
+		for (int i = 1; i < n; i++)
+			SN += cos(i * X) / i;
 		int i = 1;
+		double s2;
 		// Циклом вычисляем сумму для заданной точности
 		do {
-			s = (cos(i * x) / i);
-			se += s;
+			s = cos(i * X) / i;
+			s2 = cos((i + 1) * X) / (i + 1);
+			SE += s;
 			i++;
-		} while (fabs(se - s) < e);
+		} while (fabs(s2 - s) > e);
 		// Вычисление точного значения функции
-		y = (-log(abs(2 * sin(x / 2))));
+		Y = -log(abs(2 * sin(X / 2)));
 		//Вывод результатов
-		cout << " x = " << x << "     " << " sn = " << sn << "     " << "  se = " << se << "     " << " y = " << y << endl;
+		cout << "X = " << X; //
+		cout << ", SN = " << SN; //
+		cout << ", SE = " << SE; // Вывод результатов
+		cout << ", Y = " << Y << "; \n"; //
 	}
 	return 0;
 }
